@@ -6,11 +6,54 @@
 /*   By: joaoalme <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 18:51:31 by joaoalme          #+#    #+#             */
-/*   Updated: 2022/11/29 20:18:37 by joaoalme         ###   ########.fr       */
+/*   Updated: 2022/12/02 09:17:21 by joaoalme         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
+
+void	ft_if_flag(const char *str, int *i, int *printed, va_list args)
+{
+	(*i)++;
+	if (str[*i] != '#' && str[*i] != '+' && str[*i] != ' ')
+		*printed += ft_read_placeholder(str[*i], args);
+	else if (str[*i] == '+' || str[*i] == '#')
+	{
+		(*i)++;
+		while (str[*i] == '+')
+			(*i)++;
+		*printed += ft_apply_flags2(str[*i], args);
+	}
+	else if (str[*i] == ' ')
+	{
+		while (str[*i] == ' ')
+			(*i)++;
+		*printed += ft_apply_flags(str[*i], args);
+	}
+	(*i)++;
+}
+
+int	ft_read_placeholder(char c, va_list args)
+{
+	int	count;
+
+	count = 0;
+	if (c == 'd' || c == 'i')
+		count += ft_putnbr_r(va_arg(args, int));
+	else if (c == 's')
+		count += ft_putstr_r(va_arg(args, char *));
+	else if (c == 'c')
+		count += ft_putchar_r(va_arg(args, int));
+	else if (c == 'x' || c == 'X')
+		count += ft_puthex_r(va_arg(args, unsigned int), c);
+	else if (c == '%')
+		count += ft_putchar_r('%');
+	else if (c == 'u')
+		count += ft_put_uint_r(va_arg(args, unsigned int));
+	else if (c == 'p')
+		count += ft_count_print_ptr(va_arg(args, unsigned long long));
+	return (count);
+}
 
 int	ft_printf(const char *str, ...)
 {
@@ -24,48 +67,9 @@ int	ft_printf(const char *str, ...)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '%')
-		{
-			i++;
-			if (str[i] != '#' && str[i] != '+' && str[i] != ' ')
-				printed += ft_read_placeholder(str[i], args);
-			else if (str[i] == '#')
-			{
-				i++;
-				printed += ft_apply_flags2(str[i], args);
-			}
-			else if (str[i] == '+')
-			{
-				while (str[i] == '+')
-					i++;
-				printed += ft_apply_flags2(str[i], args);
-			}
-			else if (str[i] == ' ')
-			{
-				while (str[i] == ' ')
-					i++;
-				printed += ft_apply_flags(str[i], args);
-			}
-			i++;
-		}
+			ft_if_flag(str, &i, &printed, args);
 		else
 			printed += write(1, &str[i++], 1);
 	}
 	return (printed);
 }
-/*
-#include <stdio.h>
-int	main(void)
-{
-	int i = 30;
-	int j = 456;
-	char *str =  "hahaha";
-	char ch = 'A';
-	unsigned int k = 4342;
-	unsigned int l = 4294967295;
-	int	*ptr = &i;
-
-	ft_printf("ft_printf returns: %d\n", ft_printf("%d %d %s %c %x %X %u - %p ",
-				i, j, str, ch, k, k, l, ptr));
-	printf("printf returns: %d\n", printf("%d %d %s %c %x %X %u - %p ", i, j,
-				str, ch, k, k, l, ptr));
-}*/

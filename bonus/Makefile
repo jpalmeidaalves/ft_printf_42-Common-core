@@ -2,8 +2,8 @@ NAME	= libftprintf.a
 CC	= clang
 CFLAGS	= -Wall -Werror -Wextra
 LIB	= libftprintf.h 
-SRCS	= ft_printf.c  ft_printf_utils.c ft_printf_utils1.c ft_printf_utils_b.c ft_read_placeholder.c
-B_SRCS	= ft_printf.c  ft_printf_utils.c ft_printf_utils1.c ft_printf_utils_b.c ft_read_placeholder.c
+SRCS	= ft_printf.c  ft_printf_utils.c ft_printf_utils1.c ft_printf_utils_b.c ft_read_flags.c
+B_SRCS	= ft_printf.c  ft_printf_utils.c ft_printf_utils1.c ft_printf_utils_b.c ft_read_flags.c
 OBJS	= $(SRCS:.c=.o)
 B_OBJS	= $(B_SRCS:.c=.o)
 RM	= rm -f
