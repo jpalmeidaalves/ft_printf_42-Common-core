@@ -14,8 +14,8 @@
 ### Bonus part:
 * Manage any combination of the following flags: ’-0.’ and the field minimum width under all conversions. 
 * Manage all the following flags: ’# +’ (Yes, one of them is a space) ✅
-## Learning Expirience
+## Learning Experience
 
-* Got to know about variadic function and how to use them
-* I implemented this in a simple way, withouth any dynamic memory management. Because of this i could not handle the firts part of the bonus
-* Increased understanding about string manipulation
+* Got to know about variadic functions and how to use them
+* I implemented this in a simple way, without any dynamic memory management. Because of this, I could not handle the first part of the bonus
+* Increased understanding of string manipulation
